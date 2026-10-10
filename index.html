@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direktori Agen Bus Kantor</title>
+<style>
+:root { color-scheme: light dark; --bg: light-dark(#f4f6f8,#101418); --panel: light-dark(#ffffff,#1a2026); --text: light-dark(#17212b,#f3f6f9); --muted: light-dark(#627181,#a7b3bf); --line: light-dark(#dce3e9,#303b46); --accent: light-dark(#087f5b,#43d6a2); --accentText: #061c15; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; }
+.app { min-height: 100vh; background: var(--bg); }
+header { padding: 32px max(20px,calc((100% - 1040px)/2)); background: light-dark(#102b25,#0a211b); color: #f5fff9; }
+.eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 800; color: #85e6bf; }
+h1 { margin: 10px 0 8px; font-size: clamp(28px,5vw,44px); letter-spacing: -.04em; line-height: 1.06; }
+header p { max-width: 650px; margin: 0; color: #d0e4da; line-height: 1.55; }
+main { max-width: 1040px; margin: auto; padding: 24px 20px 52px; }
+.notice { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; background: var(--panel); font-size: 13px; line-height: 1.55; color: var(--muted); margin-bottom: 20px; }
+.notice strong { color: var(--text); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+input,select,button { font: inherit; }
+input[type=search], input[type=text], input[type=tel], select { min-width: 0; width: 100%; border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 11px 12px; border-radius: 10px; }
+.search { flex: 1 1 240px; }
+button,.button { border: 0; border-radius: 10px; background: var(--accent); color: var(--accentText); font-weight: 750; padding: 11px 14px; cursor: pointer; text-decoration: none; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+button.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--line); }
+.stats { display:flex; justify-content:space-between; gap:12px; align-items:center; margin: 8px 0 14px; color:var(--muted); font-size:13px; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(245px,1fr)); gap:14px; }
+.card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:17px; display:flex; flex-direction:column; gap:12px; min-width:0; }
+.cardTop { display:flex; gap:12px; align-items:center; }
+.logo { width:44px; height:44px; flex:0 0 44px; border-radius:13px; display:grid; place-items:center; background:light-dark(#e0f7ec,#153c2e); color:var(--accent); font-size:22px; }
+.card h2 { font-size:17px; margin:0 0 4px; }
+.route { color:var(--muted); font-size:13px; }
+.tags { display:flex; flex-wrap:wrap; gap:6px; }
+.tag { border:1px solid var(--line); color:var(--muted); border-radius:99px; padding:4px 8px; font-size:11px; }
+.cardActions { margin-top:auto; display:flex; gap:8px; }
+.cardActions a,.cardActions button { flex:1; font-size:13px; }
+.empty { padding:32px; text-align:center; color:var(--muted); border:1px dashed var(--line); border-radius:14px; }
+.admin { margin-top:30px; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; }
+.admin summary { cursor:pointer; font-weight:800; }
+.admin p { color:var(--muted); font-size:13px; line-height:1.5; }
+.formgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:14px 0; }
+label { display:block; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:5px; }
+.adminActions { display:flex; flex-wrap:wrap; gap:8px; }
+footer { text-align:center; padding:0 20px 28px; color:var(--muted); font-size:12px; }
+@media (max-width:540px) { header { padding-top:25px; padding-bottom:25px; } .stats { align-items:flex-start; flex-direction:column; } }
+</style>
+</head>
+<body><div class="app">
+<header><div class="eyebrow">Panduan cepat transportasi</div><h1>Direktori Agen Bus</h1><p>Temukan kontak agen, lalu buka chat WhatsApp langsung tanpa perlu menyimpan nomor ke kontak HP.</p></header>
+<main>
+<div class="notice"><strong>Template awal:</strong> daftar di bawah masih berisi contoh nama agen dan belum dilengkapi nomor resmi. Tambahkan dan verifikasi nomor WhatsApp sebelum dibagikan ke tim. Data yang diedit tersimpan di browser/perangkat ini saja.</div>
+<div class="toolbar"><div class="search"><input id="search" type="search" placeholder="Cari agen atau rute…" aria-label="Cari agen atau rute"></div><button class="secondary" id="showAdmin">＋ Kelola kontak</button><button class="secondary" id="exportBtn">Ekspor data</button><label class="button secondary" for="importFile">Impor data</label><input id="importFile" type="file" accept="application/json" hidden></div>
+<div class="stats"><span id="count">0 agen</span><span>Nomor harus terverifikasi sebelum digunakan.</span></div><div id="cards" class="grid"></div>
+<details class="admin" id="admin"><summary>Kelola daftar agen</summary><p>Isi nomor dengan kode negara, misalnya <b>6281234567890</b> (tanpa tanda +, spasi, atau angka 0 di depan). Perubahan hanya tersimpan di browser yang sedang digunakan. Untuk dipakai seluruh kantor, publikasikan halaman ini dan kelola sumber datanya sebelum membagikan QR.</p>
+<div class="formgrid"><div><label for="name">Nama agen</label><input id="name" type="text" placeholder="Nama agen bus"></div><div><label for="phone">Nomor WhatsApp</label><input id="phone" type="tel" placeholder="6281234567890"></div><div><label for="route">Rute / layanan</label><input id="route" type="text" placeholder="Contoh: Solo–Jakarta"></div><div><label for="notes">Catatan</label><input id="notes" type="text" placeholder="Contoh: titip paket, charter"></div></div>
+<div class="adminActions"><button id="saveBtn">Tambah agen</button><button class="secondary" id="cancelBtn">Bersihkan formulir</button><button class="secondary" id="resetBtn">Reset contoh</button></div><p id="formMsg" role="status"></p></details>
+</main><footer>Direktori kontak internal • Pastikan nama, nomor, dan layanan selalu diperbarui.</footer>
+</div>
+<script>
+const starter = [
+ {id:1,name:'Rosalia Indah',phone:'',route:'Tambahkan rute',notes:'Verifikasi nomor agen lokal'},
+ {id:2,name:'Harapan Jaya',phone:'',route:'Tambahkan rute',notes:'Verifikasi nomor agen lokal'},
+ {id:3,name:'Sinar Jaya',phone:'',route:'Tambahkan rute',notes:'Verifikasi nomor agen lokal'}
+];
+let contacts = load(); let editing = null;
+function load(){ try { const d=JSON.parse(localStorage.getItem('busDirectoryContacts')||'null'); return Array.isArray(d)?d:starter.map(x=>({...x})); } catch { return starter.map(x=>({...x})); } }
+function persist(){ localStorage.setItem('busDirectoryContacts',JSON.stringify(contacts)); render(); }
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function validPhone(p){return /^62\d{8,13}$/.test((p||'').replace(/[\s()+-]/g,''));}
+function render(){const q=document.getElementById('search').value.toLowerCase();const list=contacts.filter(c=>(c.name+' '+c.route+' '+c.notes).toLowerCase().includes(q));document.getElementById('count').textContent=`${list.length} dari ${contacts.length} agen`;const root=document.getElementById('cards');if(!list.length){root.innerHTML='<div class="empty">Tidak ada agen yang cocok dengan pencarian.</div>';return;}root.innerHTML=list.map(c=>{const good=validPhone(c.phone);const number=(c.phone||'').replace(/[\s()+-]/g,'');return `<article class="card"><div class="cardTop"><div class="logo" aria-hidden="true">▤</div><div><h2>${esc(c.name)}</h2><div class="route">${esc(c.route||'Rute belum diisi')}</div></div></div><div class="tags"><span class="tag">${good?'Nomor terisi':'Nomor belum diisi'}</span>${c.notes?`<span class="tag">${esc(c.notes)}</span>`:''}</div><div class="cardActions">${good?`<a class="button" href="https://wa.me/${number}" target="_blank" rel="noopener">Chat WhatsApp ↗</a>`:'<button disabled title="Tambahkan nomor WhatsApp yang valid">Isi nomor dahulu</button>'}<button class="secondary edit" data-id="${c.id}">Edit</button><button class="secondary delete" data-id="${c.id}">Hapus</button></div></article>`}).join('');root.querySelectorAll('.edit').forEach(b=>b.onclick=()=>edit(Number(b.dataset.id)));root.querySelectorAll('.delete').forEach(b=>b.onclick=()=>{if(confirm('Hapus kontak ini?')){contacts=contacts.filter(c=>c.id!==Number(b.dataset.id));persist();}});}
+function edit(id){const c=contacts.find(x=>x.id===id);if(!c)return;editing=id;['name','phone','route','notes'].forEach(k=>document.getElementById(k).value=c[k]||'');document.getElementById('saveBtn').textContent='Simpan perubahan';document.getElementById('admin').open=true;document.getElementById('admin').scrollIntoView({behavior:'smooth',block:'start'});}
+function clearForm(){editing=null;['name','phone','route','notes'].forEach(k=>document.getElementById(k).value='');document.getElementById('saveBtn').textContent='Tambah agen';document.getElementById('formMsg').textContent='';}
+document.getElementById('search').addEventListener('input',render);document.getElementById('showAdmin').onclick=()=>{document.getElementById('admin').open=true;document.getElementById('admin').scrollIntoView({behavior:'smooth'});};
+document.getElementById('saveBtn').onclick=()=>{const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),route=document.getElementById('route').value.trim(),notes=document.getElementById('notes').value.trim();if(!name){document.getElementById('formMsg').textContent='Nama agen wajib diisi.';return;}if(phone&&!validPhone(phone)){document.getElementById('formMsg').textContent='Format nomor belum benar. Gunakan 62 di depan, tanpa + atau spasi.';return;}if(editing!==null){contacts=contacts.map(c=>c.id===editing?{...c,name,phone,route,notes}:c);}else{contacts.push({id:Date.now(),name,phone,route,notes});}persist();clearForm();document.getElementById('formMsg').textContent='Kontak tersimpan di browser ini.';};
+document.getElementById('cancelBtn').onclick=clearForm;document.getElementById('resetBtn').onclick=()=>{if(confirm('Kembalikan ke daftar contoh?')){contacts=starter.map(x=>({...x}));persist();clearForm();}};
+document.getElementById('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(contacts,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='kontak-agen-bus.json';a.click();URL.revokeObjectURL(a.href);};
+document.getElementById('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data)||data.some(c=>!c.name))throw new Error();contacts=data.map((c,i)=>({id:Number(c.id)||Date.now()+i,name:String(c.name),phone:String(c.phone||''),route:String(c.route||''),notes:String(c.notes||'')}));persist();document.getElementById('formMsg').textContent='Data berhasil diimpor ke browser ini.';}catch{alert('File tidak valid. Pilih file JSON hasil ekspor direktori.');}e.target.value='';};
+render();
+</script></body></html>
